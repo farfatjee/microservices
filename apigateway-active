@@ -1,0 +1,25 @@
+spring.application.name=apigateway
+spring.config.import=optional:configserver:http://localhost:8082
+spring.cloud.config.name=apigateway
+spring.cloud.config.profile=active
+spring.cloud.gateway.discovery.locator.enabled=true
+spring.cloud.gateway.routes[0].id=corporate
+spring.cloud.gateway.routes[0].uri=lb://corporate
+spring.cloud.gateway.routes[0].predicates[0].name=Path
+spring.cloud.gateway.routes[0].predicates[0].args[pattern]=/corporate/**
+spring.cloud.gateway.routes[1].id=profilemanagement
+spring.cloud.gateway.routes[1].uri=lb://profilemanagement
+spring.cloud.gateway.routes[1].predicates[0].name=Path
+spring.cloud.gateway.routes[1].predicates[0].args[pattern]=/profilemanagement/**
+server.port=8085
+
+eureka.instance.leaseRenewalIntervalInSeconds = 10
+eureka.instance.metadataMap.instanceId=${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
+
+eureka.instance.instanceId=${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+eureka.client.registryFetchIntervalSeconds=5
+eureka.client.serviceUrl.defaultZone=http://localhost:8081/eureka
+spring.cloud.service-registry.auto-registration.enabled=true
+eureka.client.enabled=true
+eureka.client.serviceUrl.registerWithEureka=true
